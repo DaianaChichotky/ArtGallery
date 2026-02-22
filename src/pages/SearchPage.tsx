@@ -32,9 +32,15 @@ const SearchPage = () => {
 
   // Add to Gallery
 
-  const handleAddToGallery = (artwork: ArtworkWithNote) => {
+  const handleToggleFavorite = (artwork: ArtworkWithNote) => {
     const exists = favorites.some((item) => item.id === artwork.id);
-    if (!exists) {
+
+    if (exists) {
+      const updated = favorites.filter((item) => item.id !== artwork.id);
+      setFavorites(updated);
+      localStorage.setItem('gallery', JSON.stringify(updated));
+      toast.error('Removed from favorites');
+    } else {
       const updated = [...favorites, { ...artwork, note: '' }];
       setFavorites(updated);
       localStorage.setItem('gallery', JSON.stringify(updated));
@@ -76,9 +82,10 @@ const SearchPage = () => {
             key={artwork.id}
             artwork={artwork}
             isFavorite={favorites.some((f) => f.id === artwork.id)}
-            onAddToGallery={handleAddToGallery}
+            onAddToGallery={handleToggleFavorite}
           />
         ))}
+        {/* Show More/Show Less */}
 
         {filtered.length > 6 && (
           <div className='col-span-full flex justify-center mt-4'>
