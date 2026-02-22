@@ -4,7 +4,7 @@ export const ArtworkSchema = z.object({
   id: z.number(),
   title: z.string().default('Untitled'),
   artist_title: z.string().nullable().default('Unknown Artist'),
-  image_id: z.string().nullable(),
+  image_id: z.string().nullable().optional(),
 });
 
 export const ArtworkResponseSchema = z.object({

@@ -75,6 +75,7 @@ const ArtworkCard = ({
           <button
             className='text-yellow-400 text-2xl cursor-pointer'
             onClick={() => onAddToGallery(artwork)}
+            title={isFavorite ? 'Remove from gallery' : 'Add to gallery'}
           >
             {isFavorite ? <MdStar /> : <MdStarBorder />}
           </button>
