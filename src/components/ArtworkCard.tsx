@@ -59,7 +59,7 @@ const ArtworkCard = ({
           />
         </figure>
       ) : (
-        <div className='h-40 sm:h-48 md:h-56 w-full flex items-center justify-center bg-gray-200'>
+        <div className='h-40 sm:h-48 md:h-56 w-full flex items-center justify-center bg-neutral'>
           <span>No image available</span>
         </div>
       )}
