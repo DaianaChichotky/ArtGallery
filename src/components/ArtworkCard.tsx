@@ -63,7 +63,7 @@ const ArtworkCard = ({
       </div>
 
       {/* Action buttons */}
-      <div className='card-actions justify-end p-3 flex gap-2'>
+      <div className='card-actions justify-end p-1 flex gap-2'>
         {/* Favorite */}
         {onAddToGallery && (
           <button

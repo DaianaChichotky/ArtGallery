@@ -17,6 +17,7 @@ const MyGallery = () => {
     const updated = gallery.filter((artwork) => artwork.id !== id);
     setGallery(updated);
     localStorage.setItem('gallery', JSON.stringify(updated));
+    toast.error('Artwork removed from favs');
   };
 
   // If Gallery is empty

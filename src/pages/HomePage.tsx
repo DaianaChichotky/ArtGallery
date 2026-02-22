@@ -23,7 +23,10 @@ const HomePage = () => {
             artworks, save your favorites, and add personal notes—all in one
             place.
           </p>
-          <button className='btn btn-primary' onClick={handleGetStarted}>
+          <button
+            className='btn btn-primary hover:bg-neutral-content hover:text-primary'
+            onClick={handleGetStarted}
+          >
             Get Started
           </button>
         </div>
