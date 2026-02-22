@@ -15,7 +15,7 @@ const SearchPage = () => {
     return stored ? JSON.parse(stored) : [];
   });
 
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [visibleCount, setVisibleCount] = useState(9);
 
   useEffect(() => {
     async function loadArtworks() {
@@ -60,7 +60,10 @@ const SearchPage = () => {
   const showMore = visibleCount < filtered.length;
 
   return (
-    <div className='p-4 pb-32'>
+    <div className='p-4'>
+      <h1 className='text-3xl font-bold text-center text-primary mt-6 mb-4'>
+        Explorer
+      </h1>
       {/* Search bar */}
       <div className='flex justify-center mb-8'>
         <label className='input input-bordered flex items-center gap-2 w-full max-w-md'>
@@ -76,7 +79,7 @@ const SearchPage = () => {
       </div>
 
       {/* Grid */}
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
         {filtered.slice(0, visibleCount).map((artwork) => (
           <ArtworkCard
             key={artwork.id}
@@ -87,11 +90,11 @@ const SearchPage = () => {
         ))}
         {/* Show More/Show Less */}
 
-        {filtered.length > 6 && (
+        {filtered.length > 9 && (
           <div className='col-span-full flex justify-center mt-4'>
             <button
               className='btn btn-outline'
-              onClick={() => setVisibleCount(showMore ? visibleCount + 3 : 6)}
+              onClick={() => setVisibleCount(showMore ? visibleCount + 3 : 9)}
             >
               {showMore ? 'Show More' : 'Show Less'}
             </button>

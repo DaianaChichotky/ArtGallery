@@ -46,16 +46,22 @@ const MyGallery = () => {
   };
 
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 pb-32'>
-      {gallery.map((artwork) => (
-        <ArtworkCard
-          key={artwork.id}
-          artwork={artwork}
-          onRemove={handleRemove}
-          onNoteChange={handleNoteChange}
-        />
-      ))}
-    </div>
+    <>
+      <h1 className='text-3xl font-bold text-center text-primary mt-6 mb-4'>
+        My Gallery
+      </h1>
+
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 mb-5'>
+        {gallery.map((artwork) => (
+          <ArtworkCard
+            key={artwork.id}
+            artwork={artwork}
+            onRemove={handleRemove}
+            onNoteChange={handleNoteChange}
+          />
+        ))}
+      </div>
+    </>
   );
 };
 

@@ -20,6 +20,7 @@ const ArtworkCard = ({
   onNoteChange,
 }: ArtworkCardProps) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
   const [noteValue, setNoteValue] = useState(artwork.note ?? '');
 
   const imageUrl = artwork.image_id
@@ -38,14 +39,23 @@ const ArtworkCard = ({
   };
 
   return (
-    <div className='card w-full bg-base-100 shadow-xl relative'>
+    <div className='h-45 card w-full relative flex flex-col'>
+      {/* Title */}
+      <h2 className='card-title justify-center text-sm text-center'>
+        {artwork.title}
+      </h2>
+
       {/* Image */}
       {imageUrl ? (
-        <figure className='h-40 sm:h-48 md:h-56 w-full overflow-hidden flex items-center justify-center'>
+        <figure
+          className='h-40 sm:h-48 md:h-56 w-full overflow-hidden flex items-center justify-center cursor-pointer'
+          onClick={() => imageModalOpen && setImageModalOpen(true)}
+        >
           <img
             src={imageUrl}
             alt={artwork.title}
             className='h-40 sm:h-48 md:h-56 w-full object-cover'
+            onClick={() => setImageModalOpen(true)}
           />
         </figure>
       ) : (
@@ -54,17 +64,13 @@ const ArtworkCard = ({
         </div>
       )}
 
-      {/* Title */}
-      <div className='card-body text-center'>
-        <h2 className='card-title justify-center'>{artwork.title}</h2>
-        <p className='text-sm text-gray-500'>
-          {artwork.artist_title ?? 'Unknown Artist'}
-        </p>
-      </div>
+      <p className=' text-gray-500 text-sm text-center'>
+        {artwork.artist_title ?? 'Unknown Artist'}
+      </p>
 
       {/* Action buttons */}
-      <div className='card-actions justify-end p-1 flex gap-2'>
-        {/* Favorite */}
+      <div className='card-actions flex justify-center mt-2'>
+        {/* Star */}
         {onAddToGallery && (
           <button
             className='text-yellow-400 text-2xl cursor-pointer'
@@ -74,10 +80,10 @@ const ArtworkCard = ({
           </button>
         )}
 
-        {/* Remove card */}
+        {/* Delete card */}
         {onRemove && (
           <button
-            className='text-gray-400 text-2xl cursor-pointer hover:text-red-500'
+            className='text-gray-400 text-xl cursor-pointer hover:text-red-500'
             onClick={() => onRemove(artwork.id)}
             title='Delete artwork'
           >
@@ -88,7 +94,7 @@ const ArtworkCard = ({
         {/* Open Note Modal */}
         {onNoteChange && (
           <button
-            className='text-primary text-2xl cursor-pointer hover:text-yellow-200'
+            className='text-primary text-xl cursor-pointer hover:text-yellow-200'
             onClick={() => setModalOpen(true)}
             title='Open note'
           >
@@ -130,6 +136,26 @@ const ArtworkCard = ({
                 Close
               </button>
             </div>
+          </div>
+        </dialog>
+      )}
+
+      {/* Modal images */}
+      {imageModalOpen && (
+        <dialog open className='modal'>
+          <div className='modal-box relative flex items-center justify-center h-130 w-90'>
+            <button
+              className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-primary bg-neutral'
+              onClick={() => setImageModalOpen(false)}
+            >
+              ✕
+            </button>
+
+            <img
+              src={imageUrl!}
+              alt={artwork.title}
+              className='object-contain'
+            />
           </div>
         </dialog>
       )}
