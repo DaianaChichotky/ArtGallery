@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const NavBar = () => {
   const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem('theme') ?? 'light';
+    const saved = localStorage.getItem('theme') ?? 'abyss';
     document.documentElement.setAttribute('data-theme', saved);
     return saved === 'abyss';
   });
