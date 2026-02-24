@@ -1,61 +1,22 @@
-import { useEffect, useState } from 'react';
-import ArtworkCard from '../components/ArtworkCard';
+import { useState, useEffect } from 'react';
+import ArtworkCard from '../components/card/ArtworkCard';
 import type { Artwork } from '../schemas/artwork.schema';
 import { getArtwork } from '../api/artwork';
 import { MdSearch } from 'react-icons/md';
-import toast from 'react-hot-toast'; //npm install react-hot-toast
-
-type ArtworkWithNote = Artwork & { note?: string };
+import { useFavorites } from '../hooks/useFavorites';
+import { useFilteredArtworks } from '../hooks/useFilteredArtworks';
 
 const SearchPage = () => {
-  const [artworks, setArtworks] = useState<ArtworkWithNote[]>([]);
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [favorites, setFavorites] = useState<ArtworkWithNote[]>(() => {
-    const stored = localStorage.getItem('gallery');
-    return stored ? JSON.parse(stored) : [];
-  });
-
   const [visibleCount, setVisibleCount] = useState(9);
 
+  const { favorites, toggleFavorite } = useFavorites();
+  const filtered = useFilteredArtworks(artworks, searchTerm);
+
   useEffect(() => {
-    async function loadArtworks() {
-      try {
-        const data = await getArtwork();
-        setArtworks(data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    loadArtworks();
+    getArtwork().then(setArtworks).catch(console.error);
   }, []);
-
-  // Add to Gallery
-
-  const handleToggleFavorite = (artwork: ArtworkWithNote) => {
-    const exists = favorites.some((item) => item.id === artwork.id);
-
-    if (exists) {
-      const updated = favorites.filter((item) => item.id !== artwork.id);
-      setFavorites(updated);
-      localStorage.setItem('gallery', JSON.stringify(updated));
-      toast.error('Removed from favorites');
-    } else {
-      const updated = [...favorites, { ...artwork, note: '' }];
-      setFavorites(updated);
-      localStorage.setItem('gallery', JSON.stringify(updated));
-      toast.success('Artwork added to favs! ⭐');
-    }
-  };
-
-  // Search
-
-  const filtered = artworks.filter(
-    (artwork) =>
-      artwork.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (artwork.artist_title?.toLowerCase().includes(searchTerm.toLowerCase()) ??
-        false),
-  );
 
   const showMore = visibleCount < filtered.length;
 
@@ -64,6 +25,7 @@ const SearchPage = () => {
       <h1 className='text-3xl font-bold text-center text-primary mt-6 mb-4'>
         Explorer
       </h1>
+
       {/* Search bar */}
       <div className='flex justify-center mb-8'>
         <label className='input input-bordered flex items-center gap-2 w-full max-w-md'>
@@ -78,18 +40,18 @@ const SearchPage = () => {
         </label>
       </div>
 
-      {/* Grid */}
+      {/* Artworks grid */}
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
         {filtered.slice(0, visibleCount).map((artwork) => (
           <ArtworkCard
             key={artwork.id}
             artwork={artwork}
             isFavorite={favorites.some((f) => f.id === artwork.id)}
-            onAddToGallery={handleToggleFavorite}
+            onAddToGallery={toggleFavorite}
           />
         ))}
-        {/* Show More/Show Less */}
 
+        {/* Show More / Show Less */}
         {filtered.length > 9 && (
           <div className='col-span-full flex justify-center mt-4'>
             <button
